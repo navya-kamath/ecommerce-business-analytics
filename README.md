@@ -1,108 +1,183 @@
-# E-commerce Business Analytics
+# E-Commerce Sales Analytics
 
-## 1. Business Problem
+## Project Overview
 
-This project aims to evaluate e-commerce sales performance across product categories, regions, and time. It will investigate revenue patterns and explore how discounts, delivery times, and customer ratings relate to business performance and customer experience.
+This project analyzes an e-commerce sales dataset to understand revenue performance, purchasing patterns, product categories, regional performance, and operational factors that may influence the customer experience.
 
-**Key business question:** How is the business performing in terms of revenue, and which product, regional, pricing, or operational patterns require further investigation?
+The project follows an end-to-end data analytics workflow, using Python and Pandas for data cleaning and preparation, SQL for querying and business analysis, and Power BI for data visualization.
 
-**Note:** The current dataset does not contain explicit cost or expense information. Therefore, actual profitability cannot be established without additional data.
+The dataset contains synthetic retail transactions intended to simulate realistic e-commerce activity. The analysis is conducted for learning and portfolio development purposes.
 
-## 2. Project Objectives
+## Business Problem
 
-### 2.1 Descriptive Analysis
+E-commerce businesses need to understand which products and regions contribute to revenue, how sales vary over time, and whether pricing and operational factors are associated with differences in sales performance and customer ratings.
 
-1. Analyze total revenue by region.
-2. Compare revenue across product categories.
-3. Examine revenue trends over time.
-4. Analyze monthly revenue by product category to investigate changes in demand.
-5. Examine payment method distribution.
-6. Compare customer ratings across product categories.
-7. Investigate the relationship between discounts and revenue.
-8. Explore the relationship between delivery times and customer ratings.
+The objective of this project is to explore these patterns and translate the findings into actionable business insights.
 
-### 2.2 Statistical / Inferential Analysis
+**Primary business question:**
 
-Potential investigations:
-- Test whether average customer ratings differ across product categories.
-- Investigate whether customer ratings vary with delivery time.
-- Evaluate whether observed differences are statistically meaningful, subject to appropriate assumptions and sample sizes.
+How is the business performing in terms of revenue, and which product, regional, pricing, or operational patterns warrant further investigation?
 
-### 2.3 Machine Learning
+## Project Objectives
 
-A machine learning model will only be developed if a clear business problem, suitable target variable, and sufficient data are identified.
+- Assess the quality and structure of the dataset.
+- Clean and prepare the data for analysis using Python and Pandas.
+- Analyze overall revenue performance and trends over time.
+- Compare revenue across product categories, regions, and payment methods.
+- Investigate the relationship between discounts and revenue.
+- Explore delivery times and customer ratings to identify potential customer-experience patterns.
+- Use SQL to answer business questions through filtering, aggregation, grouping, and analytical queries.
+- Develop a Power BI dashboard to communicate key findings.
+- Provide evidence-based recommendations while acknowledging the limitations of the dataset.
 
-## 3. Dataset
+## Dataset
 
-- **Dataset:** E-commerce sales dataset
-- **Source:** To be documented
-- **Number of records:** To be verified
-- **Number of columns:** 12, as currently identified
+**Dataset name:** E-Commerce Sales Analytics (5,000 Records)
 
-### Columns
+**Source:** Kaggle
 
-- `order_id`
-- `order_date`
-- `customer_id`
-- `product_category`
-- `region`
-- `quantity`
-- `unit_price`
-- `discount`
-- `payment_method`
-- `delivery_days`
-- `customer_rating`
-- `revenue`
+**File:** `ecommerce_sales_analytics_5000.csv`
 
-## 4. Data Quality and Cleaning
+**Records:** 5,000
 
-This section will document:
-- Missing values and their treatment
-- Duplicate records and identifier validation
-- Data type and format corrections
-- Invalid or unusual values
-- Validation of revenue calculations
-- Assumptions made during cleaning
+**Data type:** Synthetic retail transaction data
 
-The raw dataset will be preserved separately from the cleaned dataset.
+The dataset description identifies the data as synthetic yet realistic and describes it as containing 15 analytical columns. The working dataset used in this project contains the following 12 columns after the data preparation and inspection performed so far.
 
-## 5. SQL Analysis
+| Column | Description |
+|---|---|
+| `order_id` | Order identifier |
+| `order_date` | Date associated with the order |
+| `customer_id` | Customer identifier |
+| `product_category` | Product category |
+| `region` | Geographic region |
+| `quantity` | Quantity purchased |
+| `unit_price` | Price per unit |
+| `discount` | Discount value associated with the transaction |
+| `payment_method` | Payment method used |
+| `delivery_days` | Delivery duration in days |
+| `customer_rating` | Customer rating |
+| `revenue` | Recorded revenue for the transaction |
 
-SQL will be used to explore the dataset, aggregate revenue, compare categories and regions, analyze trends, and answer business questions.
+The precise business definitions of `discount` and `revenue`, including the revenue calculation used by the dataset creator, should be verified against the source documentation where possible.
 
-Queries will be documented in the `sql/` directory.
+## Tools and Technologies
 
-## 6. Statistical Analysis
+- **Python:** Data analysis and preparation
+- **Pandas:** Data manipulation and cleaning
+- **NumPy:** Numerical operations, where required
+- **Matplotlib / Seaborn:** Exploratory data visualization, where used
+- **SQL:** Business queries and aggregations
+- **Power BI:** Dashboard development
+- **Git and GitHub:** Version control and project documentation
 
-This section will describe the statistical methods used, the hypotheses investigated, the results, and the assumptions and limitations of the analysis.
+## Data Cleaning and Preparation
 
-## 7. Power BI Dashboard
+Python and Pandas were used to inspect and prepare the dataset before analysis.
 
-The dashboard will summarize key performance indicators, revenue trends, regional and category comparisons, and relevant customer experience metrics.
+The preparation workflow included:
 
-## 8. Key Findings
+- Inspecting the dataset's dimensions, column names, and data types.
+- Examining missing values and duplicate records.
+- Checking data types and converting the order date to a datetime format.
+- Exploring numerical distributions and potential outliers.
+- Investigating unusually high revenue observations before deciding whether they should be retained.
+- Comparing recorded revenue against an assumed calculation based on quantity, unit price, and discount.
+- Validating the resulting dataset and preparing it for subsequent analysis.
 
-Findings will include quantified results, relevant comparisons, and interpretations supported by the data.
+Potential outliers were investigated rather than automatically removed. High values were not treated as errors solely because they appeared outside conventional statistical thresholds.
 
-## 9. Business Recommendations
+The dataset is synthetic and spans 2022–2035. Its regular date pattern is considered when interpreting time-based analysis.
 
-Recommendations will identify potential actions, supporting evidence, expected benefits where measurable, and limitations.
+## SQL Analysis
 
-## 10. Limitations
+SQL will be used to answer business questions using the prepared dataset.
 
-- Profitability cannot be calculated reliably without cost and expense data.
-- The dataset's source, time coverage, and data quality require verification.
-- The meaning and calculation of the discount and revenue fields must be confirmed.
-- Findings will be limited to the information available in the dataset.
+Planned areas of analysis include:
 
-## 11. Tools and Technologies
+- Overall revenue and transaction summaries.
+- Revenue by year, month, product category, and region.
+- Category and regional performance comparisons.
+- Payment method distribution.
+- Discount and revenue analysis.
+- Delivery duration and customer rating analysis.
+- Ranking and comparison of categories or regions using more advanced SQL queries.
 
-- Python and Pandas
-- SQL
-- Power BI
-- Statistical analysis
-- Git and GitHub
+The results will be documented as the queries are completed and validated.
 
-## 12. Project Status
+## Exploratory Data Analysis
 
-Currently defining the business problem and profiling the dataset. Analysis, cleaning, and dashboard development will be documented as the project progresses.
+Exploratory analysis will examine the distributions and relationships of important business measures, including revenue, quantity, unit price, discount, delivery duration, and customer rating.
+
+The aim is to identify patterns, investigate unusual observations, and develop questions for further analysis without assuming that observed relationships imply causation.
+
+## Power BI Dashboard
+
+A Power BI dashboard will be developed after the initial SQL analysis.
+
+Planned dashboard elements include:
+
+- Key performance indicators for revenue and transaction volume.
+- Revenue trends over time.
+- Revenue by product category and region.
+- Payment method distribution.
+- Discount-related analysis.
+- Delivery and customer-rating metrics.
+
+The final dashboard layout and KPIs will be determined by the findings and the suitability of the available data.
+
+## Key Findings
+
+*To be completed after SQL analysis and dashboard development.*
+
+This section will summarize the most important findings supported by the analysis, including relevant comparisons, trends, and observations.
+
+## Business Recommendations
+
+*To be completed after the findings have been validated.*
+
+Recommendations will be linked to the observed data patterns and will distinguish between evidence-supported conclusions and areas requiring further investigation.
+
+## Limitations
+
+- The dataset is synthetic and may not represent actual e-commerce customer behavior or business operations.
+- The available data does not include product costs, operating expenses, or other cost measures required to calculate profit or profit margin.
+- The exact business definitions of revenue and discount should be confirmed where possible.
+- The dataset's regular one-record-per-day date pattern may not reflect the transaction frequency of a real online retailer.
+- Relationships between discounts, revenue, delivery duration, and customer ratings do not establish causation.
+- The available columns do not provide enough information to explain every factor that may influence purchasing decisions or customer satisfaction.
+
+## Project Status
+
+- [x] Initial data inspection
+- [x] Data cleaning and preparation
+- [x] Preliminary outlier investigation
+- [x] Preliminary revenue consistency validation
+- [ ] SQL business analysis
+- [ ] Exploratory analysis and validated findings
+- [ ] Power BI dashboard
+- [ ] Final recommendations and project review
+
+## Repository Structure
+
+```text
+ecommerce-sales-analytics/
+├── README.md
+├── data/
+│   ├── raw/
+│   └── cleaned/
+├── notebooks/
+│   └── Ecommerce_data_analysis.ipynb
+├── sql/
+│   ├── 01_basic_queries.sql
+│   ├── 02_aggregations.sql
+│   ├── 03_business_analysis.sql
+│   └── 04_advanced_queries.sql
+└── dashboard/
+```
+
+*The structure above represents the intended project organization; files can be added as each stage is completed.*
+
+## Conclusion
+
+This project demonstrates an end-to-end approach to data analytics, from data quality assessment and preparation to SQL-based business analysis and dashboard development. The goal is to produce clear, reproducible analysis and communicate insights with appropriate attention to data quality, assumptions, and limitations.
