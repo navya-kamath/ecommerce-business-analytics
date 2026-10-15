@@ -1,0 +1,12 @@
+# Python and Jupyter
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+notebook/.ipynb_checkpoints/
+
+# VS Code workspace settings
+.vscode/
+
+# Generated SQLite database
+data/ecommerce.db
+*.db-journal
