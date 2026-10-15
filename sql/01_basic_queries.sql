@@ -1,106 +1,192 @@
--- Entire dataset check
-SELECT * 
+
+-- ============================================================
+-- E-commerce Business Analytics
+-- SQL Basics and Exploratory Analysis
+-- Database: SQLite
+-- Table: ecommerce_sales
+-- ============================================================
+
+
+-- 1. DATASET INSPECTION
+-- Inspect the entire dataset during initial exploration
+SELECT *
 FROM ecommerce_sales;
 
--- Total rows check
-SELECT COUNT(*) as total_record
+
+-- Count the total number of records
+SELECT COUNT(*) AS total_records
 FROM ecommerce_sales;
 
--- Number of order across each product category
-SELECT product_category, COUNT(*) as item_count
-FROM ecommerce_sales
-GROUP BY product_category;
 
--- Number of order across each region
-SELECT region, COUNT(*) as item_count
+-- 2. TRANSACTION DISTRIBUTION
+-- Count records across each product category
+SELECT
+    product_category,
+    COUNT(*) AS transaction_count
 FROM ecommerce_sales
-GROUP BY region;
+GROUP BY product_category
+ORDER BY transaction_count DESC;
 
--- Number of order across each payment method
-SELECT payment_method, COUNT(*) as transaction_count
-FROM ecommerce_sales
-GROUP BY payment_method;
 
--- Top 3 Product Category, Region with highest revenue
-SELECT product_category, region, revenue
+-- Count records across each region
+SELECT
+    region,
+    COUNT(*) AS transaction_count
 FROM ecommerce_sales
-ORDER BY revenue DESC
+GROUP BY region
+ORDER BY transaction_count DESC;
+
+
+-- Count transactions by payment method
+SELECT
+    payment_method,
+    COUNT(*) AS transaction_count
+FROM ecommerce_sales
+GROUP BY payment_method
+ORDER BY transaction_count DESC;
+
+
+-- 3. REVENUE ANALYSIS
+-- Top 3 product categories by total revenue
+SELECT
+    product_category,
+    SUM(revenue) AS total_revenue
+FROM ecommerce_sales
+GROUP BY product_category
+ORDER BY total_revenue DESC
 LIMIT 3;
 
--- Lowest 3 Product Category, Region with least revenue
-SELECT product_category, region, revenue
+
+-- 3 individual transactions with the lowest revenue
+SELECT
+    order_id,
+    product_category,
+    region,
+    revenue
 FROM ecommerce_sales
 ORDER BY revenue ASC
 LIMIT 3;
 
--- Average revenue across each product category
-SELECT product_category, AVG(revenue) as avg_revenue
-FROM ecommerce_sales
-GROUP BY product_category;
 
--- Total revenue with respect to each product category and region
-SELECT product_category, region, SUM(revenue)
-FROM ecommerce_sales
-GROUP BY product_category, region;
-
--- Product category with average rating greater than 3
-SELECT product_category, ROUND(AVG(customer_rating),2) as avg_rating
-FROM ecommerce_sales
-GROUP BY product_category
-HAVING AVG(customer_rating) > 3;
-
--- Customer Id revenue greater than 3500 and rating over 3.5
-SELECT customer_id, revenue, customer_rating
-FROM ecommerce_sales
-WHERE revenue > 3500 AND customer_rating > 3.5;
-
--- Customer Id with revenue over 4000 or rating over 4
-SELECT customer_id, revenue, customer_rating
-FROM ecommerce_sales
-WHERE revenue > 4000 OR customer_rating > 4.5;
-
--- Average revenue of each product category other than Home
+-- Average revenue per transaction across product categories
 SELECT
     product_category,
-    ROUND(AVG(revenue),2) AS avg_revenue
+    ROUND(AVG(revenue), 2) AS avg_revenue
 FROM ecommerce_sales
-WHERE product_category NOT LIKE 'Ho%'
 GROUP BY product_category
 ORDER BY avg_revenue DESC;
 
--- Data with Beauty Product category in each region with total revenue in descending order
-SELECT region, product_category, SUM(revenue) as total_revenue
+
+-- Total revenue by product category and region
+SELECT
+    product_category,
+    region,
+    ROUND(SUM(revenue), 2) AS total_revenue
 FROM ecommerce_sales
-WHERE product_category LIKE '%Beauty%'
+GROUP BY product_category, region
+ORDER BY total_revenue DESC;
+
+
+-- 4. CUSTOMER EXPERIENCE
+-- Product categories with an average customer rating above 3
+SELECT
+    product_category,
+    ROUND(AVG(customer_rating), 2) AS avg_rating
+FROM ecommerce_sales
+GROUP BY product_category
+HAVING AVG(customer_rating) > 3
+ORDER BY avg_rating DESC;
+
+
+-- 5. TRANSACTION-LEVEL FILTERING
+-- Transactions with revenue above 3500 and rating above 3.5
+SELECT
+    order_id,
+    customer_id,
+    revenue,
+    customer_rating
+FROM ecommerce_sales
+WHERE revenue > 3500
+  AND customer_rating > 3.5
+ORDER BY revenue DESC;
+
+
+-- Transactions with revenue above 4000 or rating above 4.5
+SELECT
+    order_id,
+    customer_id,
+    revenue,
+    customer_rating
+FROM ecommerce_sales
+WHERE revenue > 4000
+   OR customer_rating > 4.5
+ORDER BY revenue DESC;
+
+
+-- Average revenue by category, excluding the Home category
+SELECT
+    product_category,
+    ROUND(AVG(revenue), 2) AS avg_revenue
+FROM ecommerce_sales
+WHERE product_category <> 'Home'
+GROUP BY product_category
+ORDER BY avg_revenue DESC;
+
+
+-- Beauty product revenue by region
+SELECT
+    region,
+    SUM(revenue) AS total_revenue
+FROM ecommerce_sales
+WHERE product_category = 'Beauty'
 GROUP BY region
-ORDER BY SUM(revenue) DESC;
+ORDER BY total_revenue DESC;
 
--- Customer Id's with Revenue generating between 3800 and 4000
-SELECT customer_id, revenue
+
+-- Transactions with revenue between 3800 and 4000 inclusive
+SELECT
+    order_id,
+    customer_id,
+    revenue
 FROM ecommerce_sales
-WHERE revenue BETWEEN 3800 AND 4000;
+WHERE revenue BETWEEN 3800 AND 4000
+ORDER BY revenue DESC;
 
--- Revenue generated in the South and North region
-SELECT region, product_category, revenue
+
+-- Transactions in the North and South regions
+SELECT
+    order_id,
+    region,
+    product_category,
+    revenue
 FROM ecommerce_sales
 WHERE region IN ('North', 'South');
 
--- Revenue generated in region other than South and North
-SELECT region, product_category, revenue
-FROM ecommerce_sales
-WHERE region NOT IN ('North','South');
 
--- Verifying the column with no rating
-SELECT customer_id, customer_rating
+-- Transactions outside the North and South regions
+SELECT
+    order_id,
+    region,
+    product_category,
+    revenue
 FROM ecommerce_sales
-WHERE customer_rating IS NULL;
+WHERE region NOT IN ('North', 'South');
 
--- Transaction made using COD and Card
-SELECT payment_method, COUNT(payment_method) as total_payments
+
+-- 6. PAYMENT METHOD ANALYSIS
+-- Count transactions made using Card or COD
+SELECT
+    payment_method,
+    COUNT(*) AS transaction_count
 FROM ecommerce_sales
-WHERE payment_method in ('Card','COD');
+WHERE payment_method IN ('Card', 'COD')
+GROUP BY payment_method
+ORDER BY transaction_count DESC;
 
--- High, Medium and Low ranking based on the revenue
+
+-- 7. REVENUE SEGMENTATION
+-- Classify transactions into revenue bands
+-- Thresholds are illustrative and analyst-defined
 SELECT
     order_id,
     revenue,
@@ -111,14 +197,31 @@ SELECT
     END AS revenue_band
 FROM ecommerce_sales;
 
--- Regions with total revenue over 100,000
-SELECT region, SUM(revenue) as total_revenue
+
+-- 8. REGIONAL PERFORMANCE
+-- Regions with total revenue above 100000
+SELECT
+    region,
+    ROUND(SUM(revenue), 2) AS total_revenue
 FROM ecommerce_sales
 GROUP BY region
-HAVING SUM(revenue) > 100000;
+HAVING SUM(revenue) > 100000
+ORDER BY total_revenue DESC;
 
--- Replacing the missing customer rating with 0
-SELECT 
-    customer_id,
-    COALESCE(customer_rating,0) AS rating_display
+
+-- 9. DATA QUALITY CHECKS
+-- Check for missing customer ratings
+SELECT
+    COUNT(*) AS total_records,
+    COUNT(customer_rating) AS ratings_present,
+    COUNT(*) - COUNT(customer_rating) AS missing_ratings
 FROM ecommerce_sales;
+
+
+-- Display records with missing customer ratings, if any
+SELECT
+    order_id,
+    customer_id,
+    customer_rating
+FROM ecommerce_sales
+WHERE customer_rating IS NULL;
